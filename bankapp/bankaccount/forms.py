@@ -12,7 +12,7 @@ def generate_numbers():
 
 class LoginForm(forms.Form):
     email = forms.EmailField(max_length=50)
-    password = forms.PasswordInput()
+    password = forms.CharField(widget=forms.PasswordInput())
 
 
 class CreateAccountForm(forms.ModelForm):

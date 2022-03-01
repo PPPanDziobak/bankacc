@@ -10,7 +10,7 @@ from django.views.generic import (
     View
 )
 from .models import Account, Transfer
-from .forms import CreateAccountForm, TransferForm
+from .forms import CreateAccountForm, LoginForm, TransferForm
 
 
 class HomeView(View):
@@ -25,12 +25,23 @@ class HomeView(View):
 class LoginView(View):
     template_name = 'bankaccount/login.html'
 
+    def get(self, request):
+        form = LoginForm()
+        context = {'form': form}
+
+        return render(request, self.template_name, context)
+
     def login_user(self, request):
 
         if request.method == 'POST':
-            email = request.POST['email']
-            password = request.POST['password']
-            user = authenticate(request, email=email, password=password)
+            form = LoginForm()
+
+            context = {'form': form}
+
+            # email = request.POST['email']
+            # password = request.POST['password']
+
+            user = authenticate(request, context)
 
             if user is not None:
                 login(request, user)
