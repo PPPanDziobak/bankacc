@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import get_object_or_404, render
 from django.views.generic import (
     CreateView,
     DetailView,
@@ -8,7 +8,7 @@ from django.views.generic import (
     View
 )
 from .models import Account, Transfer
-from .forms import CreateAccountForm
+from .forms import CreateAccountForm, TransferForm
 
 
 class HomeView(View):
@@ -20,7 +20,7 @@ class HomeView(View):
         return render(request, self.template_name)
 
 
-class AccountCreateView(View):
+class AccountCreateView(CreateView):
 
     template_name = 'bankaccount/create-account.html'
 
@@ -38,16 +38,72 @@ class AccountCreateView(View):
         return render(request, self.template_name, context)
 
 
-class AccountDetailView(View):
-    pass
+class AccountDetailView(DetailView):
+
+    template_name = 'bankaccount/my-account.html'
+
+    def get_object(self):
+        balance = self.kwargs.get('balance')
+        return get_object_or_404(Account, balance=balance)
 
 
 class TransferHistoryView(View):
-    pass
+    template_name = 'bankaccount/transfer-history.html'
+    queryset = Transfer.objects.all()
+
+    def get_queryset(self):
+        return self.queryset
+
+    def get(self, request, *args, **kwrgs):
+        context = {'object_list': self.get_queryset()}
+        return render(request, self.template_name, context)
 
 
 class TransferView(View):
-    pass
+    template_name = 'bankaccount/transfer.html'
+
+    def get(self, request, *args, **kwargs):
+
+        form = TransferForm()
+        context = {'form': form}
+
+        return render(request, self.template_name, context)
+
+    def post(self, request, *args, **kwargs):
+
+        form = TransferForm(request.POST)
+
+        if form.is_valid():
+            form.save()
+            form = TransferForm()
+        context = {'form': form}
+
+        return render(request, self.template_name, context)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 class NextView(View):
@@ -90,3 +146,4 @@ class AccountOperations(View):
         }
 
         return context
+

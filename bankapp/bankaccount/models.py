@@ -28,6 +28,7 @@ class Account(models.Model):
 
 
 class Transfer(models.Model):
+    transfer_title = models.CharField(u'Tytuł przelewu', max_length=50, default='Przelew środków')
     transfer_receiver_firstname = models.CharField(u'Imię odbiorcy', max_length=50)
     transfer_receiver_lastname = models.CharField(u'Nazwisko odbiorcy', max_length=50)
     transfer_receiver_account_number = models.CharField(u'Nr konta odbiorcy', max_length=50)
