@@ -31,7 +31,7 @@ class Transfer(models.Model):
     transfer_title = models.CharField(u'Tytuł przelewu', max_length=50, default='Przelew środków')
     transfer_receiver_firstname = models.CharField(u'Imię odbiorcy', max_length=50)
     transfer_receiver_lastname = models.CharField(u'Nazwisko odbiorcy', max_length=50)
-    transfer_receiver_account_number = models.CharField(u'Nr konta odbiorcy', max_length=50)
+    transfer_receiver_account_number = models.CharField(u'Nr konta odbiorcy', max_length=5)
     transfer_amount = models.IntegerField(u'Kwota transakcji', default=0.01)
     transfer_date = models.DateField('Data przelewu', auto_now_add=True, blank=True)
     balance_before_transfer = models.IntegerField('Stan przed transakcją')

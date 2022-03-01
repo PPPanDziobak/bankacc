@@ -16,6 +16,6 @@ urlpatterns = [
     path('login/', LoginView.as_view(), name='login'),
     path('create-account/', AccountCreateView.as_view(), name='create-account'),
     path('my-account/', AccountDetailView.as_view(), name='account-details'),
-    path('my-account/transfer', TransferView.as_view(), name='transfer'),
+    path('transfer/', TransferView.as_view(), name='transfer'),
     path('my-account/transfer-history', TransferHistoryView.as_view(), name='transfer-history'),
 ]
