@@ -82,9 +82,12 @@ class AccountDetailView(DetailView):
 
     template_name = 'bankaccount/my-account.html'
 
-    def get_object(self):
-        balance = self.kwargs.get('balance')
-        return get_object_or_404(Account, balance=balance)
+    def get(self, request, id=None, *args, **kwargs):
+        context = {}
+        if id is not None:
+            obj = get_object_or_404(Account, id=id)
+            context['object'] = obj
+        return render(request, self.template_name, context)
 
 
 class TransferHistoryView(View):
