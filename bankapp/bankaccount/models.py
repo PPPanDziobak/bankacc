@@ -5,6 +5,9 @@ class CreditCard(models.Model):
     card_number = models.CharField(u'Numer karty', max_length=10)
     expiration_date = models.DateField(u'Data ważności')
     cvc_number = models.CharField(u'Numer CVC', max_length=3)
+    payment_amount = models.IntegerField('Kwota transakcji', default=0.00)
+    payment_date = models.DateField('Data transakcji', auto_now_add=True, blank=True)
+    payments_counter = models.IntegerField(u'Licznik transakcji', default=0)
 
 
 # class Account(models.Model):

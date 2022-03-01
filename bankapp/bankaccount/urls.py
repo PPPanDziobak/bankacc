@@ -1,4 +1,4 @@
-from django.urls import path
+from django.urls import include, path
 from .views import (
     AccountCreateView,
     AccountDetailView,
@@ -18,4 +18,5 @@ urlpatterns = [
     path('my-account/', AccountDetailView.as_view(), name='account-details'),
     path('transfer/', TransferView.as_view(), name='transfer'),
     path('my-account/transfer-history', TransferHistoryView.as_view(), name='transfer-history'),
+    path('api-auth/', include('rest_framework.urls'))
 ]
