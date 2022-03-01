@@ -1,4 +1,6 @@
-from django.shortcuts import get_object_or_404, render
+from django.shortcuts import get_object_or_404, redirect, render
+from django.contrib.auth import authenticate, login
+from django.contrib import messages
 from django.views.generic import (
     CreateView,
     DetailView,
@@ -18,6 +20,26 @@ class HomeView(View):
     def get(self, request):
 
         return render(request, self.template_name)
+
+
+class LoginView(View):
+    template_name = 'bankaccount/login.html'
+
+    def login_user(self, request):
+
+        if request.method == 'POST':
+            email = request.POST['email']
+            password = request.POST['password']
+            user = authenticate(request, email=email, password=password)
+
+            if user is not None:
+                login(request, user)
+                return redirect('account-details')
+
+            else:
+                return redirect('login')
+        else:
+            return render(request, self.template_name)
 
 
 class AccountCreateView(CreateView):
@@ -110,8 +132,7 @@ class NextView(View):
     pass
 
 
-class LoginView(View):
-    pass
+
 
 
 class AccountOperations(View):

@@ -1,5 +1,7 @@
 from django.db import models
 
+import random
+
 
 class CreditCard(models.Model):
     card_number = models.CharField(u'Numer karty', max_length=10)
@@ -8,6 +10,17 @@ class CreditCard(models.Model):
     payment_amount = models.IntegerField('Kwota transakcji', default=0.00)
     payment_date = models.DateField('Data transakcji', auto_now_add=True, blank=True)
     payments_counter = models.IntegerField(u'Licznik transakcji', default=0)
+
+    def __str__(self):
+        return self.card_number
+
+    def get_card_number(self):
+        card_number = random.randint(100000, 999999)
+        return card_number
+
+    def save(self, *args, **kwargs):
+        self.account_number = self.get_card_number()
+        super(CreditCard, self).save(*args, **kwargs)
 
 
 # class Account(models.Model):
@@ -20,6 +33,7 @@ class Account(models.Model):
     firstname = models.CharField(u'Imię', max_length=50, blank=True)
     lastname = models.CharField(u'Nazwisko', max_length=50, blank=True)
     email = models.EmailField(u'Email', max_length=50, blank=True)
+    password = models.CharField(u'Hasło', max_length=12, blank=True)
     phone = models.CharField(u'Telefon', max_length=12, blank=True)
     address = models.CharField(u'Adres', max_length=250, blank=True)
     city = models.CharField(u'Miasto', max_length=250, blank=True)
@@ -28,6 +42,17 @@ class Account(models.Model):
     account_number = models.CharField(u'Numer konta', max_length=12, blank=False)
     balance = models.IntegerField(u'Stan konta')
     credit_card = models.ForeignKey(CreditCard, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.account_number
+
+    def get_account_number(self):
+        account_number = random.randint(100000, 999999)
+        return str(account_number)
+
+    def save(self, *args, **kwargs):
+        self.account_number = self.get_account_number()
+        super(Account, self).save(*args, **kwargs)
 
 
 class Transfer(models.Model):
