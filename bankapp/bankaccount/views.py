@@ -25,13 +25,19 @@ class HomeView(View):
 class LoginView(View):
     template_name = 'bankaccount/login.html'
 
-    def get(self, request):
+    def get(self, request, **kwargs):
         form = LoginForm()
         context = {'form': form}
 
         return render(request, self.template_name, context)
 
-    def login_user(self, request):
+    def post(self, request, **kwargs):
+        form = LoginForm()
+        context = {'form': form}
+
+        return render(request, self.template_name, context)
+
+    def login_user(self, request, **kwargs):
 
         if request.method == 'POST':
             form = LoginForm()
@@ -45,7 +51,8 @@ class LoginView(View):
 
             if user is not None:
                 login(request, user)
-                return redirect('account-details')
+                return redirect('https://wp.pl')
+                # return redirect('account-details')
 
             else:
                 return redirect('login')
