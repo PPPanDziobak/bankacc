@@ -9,7 +9,7 @@ from django.views.generic import (
     View
 )
 from .models import Account, Transfer
-from .forms import ChangePinForm, CreateAccountForm, LoginForm, TransferForm
+from .forms import ChangePinForm, ChangeDataForm, CreateAccountForm, LoginForm, TransferForm
 
 
 class HomeView(View):
@@ -141,11 +141,34 @@ class ChangePinView(View):
         return render(request, self.template_name, context)
 
 
+class UpdatePersonalDataView(UpdateView):
+    template_name = 'bankaccount/change-pin.html'
 
+    def get_user_data(self):
+        user = self.kwargs.get('id')
+        return get_object_or_404(Account, user=user)
 
+    def get(self, request, *args, **kwargs):
 
+        form = ChangeDataForm()
+        context = {'form': form}
 
+        return render(request, self.template_name, context)
 
+    def form_valid(self, form):
+        print(form.cleaned_data)
+        return super().form_valid(form)
+
+    def post(self, request, *args, **kwargs):
+
+        form = ChangeDataForm(request.POST)
+
+        if form.form_valid():
+            form.save()
+            form = ChangeDataForm()
+        context = {'form': form}
+
+        return render(request, self.template_name, context)
 
 
 

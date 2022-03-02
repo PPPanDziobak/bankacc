@@ -38,3 +38,6 @@ class ChangePinForm(forms.ModelForm):
         fields = ('pin_number', )
 
 
+class ChangeDataForm(forms.ModelForm):
+    pass
+
