@@ -1,4 +1,5 @@
 from django.urls import include, path
+from rest_framework import routers
 from .views import (
     AccountCreateView,
     AccountDetailView,
@@ -7,7 +8,13 @@ from .views import (
     TransferHistoryView,
     TransferView
 )
+from .viewsets import AccountViewset, CardViewset, TransferViewset
 
+
+router = routers.DefaultRouter()
+router.register(r'account', AccountViewset)
+router.register(r'card', CardViewset)
+router.register(r'transfer', TransferViewset)
 
 app_name = 'bankaccount'
 
@@ -18,5 +25,6 @@ urlpatterns = [
     path('<int:id>/', AccountDetailView.as_view(), name='account-details'),
     path('transfer/', TransferView.as_view(), name='transfer'),
     path('my-account/transfer-history', TransferHistoryView.as_view(), name='transfer-history'),
+    path('api/', include(router.urls)),
     path('api-auth/', include('rest_framework.urls'))
 ]
