@@ -2,7 +2,7 @@ from django import forms
 from django.forms import CharField
 import random
 
-from .models import Account, Transfer
+from .models import Account, CreditCard, Transfer
 
 
 def generate_numbers():
@@ -29,5 +29,12 @@ class TransferForm(forms.ModelForm):
     class Meta:
         model = Transfer
         exclude = ('balance_before_transfer', 'balance_after_transfer', 'transaction_counter')
+
+
+class ChangePinForm(forms.ModelForm):
+
+    class Meta:
+        model = CreditCard
+        fields = ('pin_number', )
 
 

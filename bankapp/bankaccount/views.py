@@ -1,6 +1,5 @@
 from django.shortcuts import get_object_or_404, redirect, render
 from django.contrib.auth import authenticate, login
-from django.contrib import messages
 from django.views.generic import (
     CreateView,
     DetailView,
@@ -10,7 +9,7 @@ from django.views.generic import (
     View
 )
 from .models import Account, Transfer
-from .forms import CreateAccountForm, LoginForm, TransferForm
+from .forms import ChangePinForm, CreateAccountForm, LoginForm, TransferForm
 
 
 class HomeView(View):
@@ -44,15 +43,11 @@ class LoginView(View):
 
             context = {'form': form}
 
-            # email = request.POST['email']
-            # password = request.POST['password']
-
             user = authenticate(request, context)
 
             if user is not None:
                 login(request, user)
-                return redirect('https://wp.pl')
-                # return redirect('account-details')
+                return redirect('account-details')
 
             else:
                 return redirect('login')
@@ -90,7 +85,7 @@ class AccountDetailView(DetailView):
         return render(request, self.template_name, context)
 
 
-class TransferHistoryView(View):
+class TransferHistoryView(ListView):
     template_name = 'bankaccount/transfer-history.html'
     queryset = Transfer.objects.all()
 
@@ -124,6 +119,26 @@ class TransferView(View):
         return render(request, self.template_name, context)
 
 
+class ChangePinView(View):
+    template_name = 'bankaccount/change-pin.html'
+
+    def get(self, request, *args, **kwargs):
+
+        form = ChangePinForm()
+        context = {'form': form}
+
+        return render(request, self.template_name, context)
+
+    def post(self, request, *args, **kwargs):
+
+        form = ChangePinForm(request.POST)
+
+        if form.is_valid():
+            form.save()
+            form = ChangePinForm()
+        context = {'form': form}
+
+        return render(request, self.template_name, context)
 
 
 
@@ -149,8 +164,6 @@ class TransferView(View):
 
 
 
-class NextView(View):
-    pass
 
 
 

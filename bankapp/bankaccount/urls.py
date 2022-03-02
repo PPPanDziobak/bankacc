@@ -3,6 +3,7 @@ from rest_framework import routers
 from .views import (
     AccountCreateView,
     AccountDetailView,
+    ChangePinView,
     HomeView,
     LoginView,
     TransferHistoryView,
@@ -24,6 +25,7 @@ urlpatterns = [
     path('create-account/', AccountCreateView.as_view(), name='create-account'),
     path('<int:id>/', AccountDetailView.as_view(), name='account-details'),
     path('transfer/', TransferView.as_view(), name='transfer'),
+    path('card/', ChangePinView.as_view(), name='card'),
     path('my-account/transfer-history', TransferHistoryView.as_view(), name='transfer-history'),
     path('api/', include(router.urls)),
     path('api-auth/', include('rest_framework.urls'))

@@ -5,11 +5,12 @@ import random
 
 class CreditCard(models.Model):
     card_number = models.CharField(u'Numer karty', max_length=10)
-    expiration_date = models.DateField(u'Data ważności')
+    expiration_date = models.DateField(u'Data ważności', auto_now_add=True)
     cvc_number = models.CharField(u'Numer CVC', max_length=3)
     payment_amount = models.IntegerField('Kwota transakcji', default=0.00)
     payment_date = models.DateField('Data transakcji', auto_now_add=True, blank=True)
     payments_counter = models.IntegerField(u'Licznik transakcji', default=0)
+    pin_number = models.CharField(u'Kod pin', max_length=4, default=1234)
 
     def __str__(self):
         return self.card_number
@@ -21,12 +22,6 @@ class CreditCard(models.Model):
     def save(self, *args, **kwargs):
         self.account_number = self.get_card_number()
         super(CreditCard, self).save(*args, **kwargs)
-
-
-# class Account(models.Model):
-#     account_number = models.CharField(u'Numer konta', max_length=12)
-#     balance = models.IntegerField(u'Stan konta')
-#     credit_card = models.ForeignKey(CreditCard, on_delete=models.CASCADE)
 
 
 class Account(models.Model):
@@ -65,14 +60,6 @@ class Transfer(models.Model):
     balance_before_transfer = models.IntegerField('Stan przed transakcją')
     balance_after_transfer = models.IntegerField('Stan po transakcji')
     transaction_counter = models.IntegerField(u'Licznik transakcji', default=0)
-
-
-class CardPayment(models.Model):
-    payment_amount = models.IntegerField('Kwota transakcji', default=0.00)
-    payment_date = models.DateField('Data transakcji', auto_now_add=True, blank=True)
-    payments_counter = models.IntegerField(u'Licznik transakcji', default=0)
-
-
 
 
 
